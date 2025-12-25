@@ -1,15 +1,5 @@
 
-
-def convert_tuple_list_to_dict(tuple_list):
-    return dict(tuple_list)
-
-
-def print_dict(dict_to_output):
-    for key, value in new_dict.items():
-        print(f'{value} : {key}')
-
-
-if __name__ == '__main__':
+def main():
     d = [
         ('Hendrix', '1942'),
         ('Allman', '1946'),
@@ -32,5 +22,11 @@ if __name__ == '__main__':
         ('Thompson', '1949'),
         ('Burton', '1939')
     ]
-    new_dict = convert_tuple_list_to_dict(d)
-    print_dict(new_dict)
+
+    new_dict = dict(d)
+    for key, value in new_dict.items():
+        print(f'{value} : {key}')
+
+
+if __name__ == '__main__':
+    main()

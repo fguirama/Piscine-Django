@@ -1,4 +1,3 @@
-
 class ChemicalElement:
     def __init__(self, line):
         self.electron: str = ''

@@ -1,5 +1,4 @@
-
-if __name__ == '__main__':
+def print_numbers():
     filename = 'numbers.txt'
 
     try:
@@ -8,3 +7,7 @@ if __name__ == '__main__':
                 print(line)
     except FileNotFoundError:
         print(f'File not found `{filename}`')
+
+
+if __name__ == '__main__':
+    print_numbers()

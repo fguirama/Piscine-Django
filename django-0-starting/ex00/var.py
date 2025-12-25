@@ -1,4 +1,3 @@
-
 def my_var():
     int_var: int = 42
     str_var: str = '42'

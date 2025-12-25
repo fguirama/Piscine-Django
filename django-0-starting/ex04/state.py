@@ -1,6 +1,13 @@
 import sys
 
 
+def main():
+    if len(sys.argv) != 2:
+        exit(1)
+    ipt_city = sys.argv[1]
+    print(get_state(ipt_city))
+
+
 def get_state(city):
     states = {
         "Oregon": "OR",
@@ -31,7 +38,4 @@ def get_key(dic, value):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        exit(1)
-    ipt_city = sys.argv[1]
-    print(get_state(ipt_city))
+    main()

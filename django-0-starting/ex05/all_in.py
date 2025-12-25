@@ -2,6 +2,8 @@ import sys
 
 
 def main():
+    if len(sys.argv) != 2:
+        exit(1)
     ipt = sys.argv[1]
     for query in ipt.split(','):
         normalize_query = query.strip()
@@ -54,6 +56,4 @@ def get_value(dic, search_value, index):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        exit(1)
     main()

@@ -1,6 +1,13 @@
 import sys
 
 
+def main():
+    if len(sys.argv) != 2:
+        exit(1)
+    ipt_state = sys.argv[1]
+    print(get_capital_city(ipt_state))
+
+
 def get_capital_city(state):
     states = {
         "Oregon": "OR",
@@ -24,7 +31,4 @@ def get_capital_city(state):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        exit(1)
-    ipt_state = sys.argv[1]
-    print(get_capital_city(ipt_state))
+    main()
