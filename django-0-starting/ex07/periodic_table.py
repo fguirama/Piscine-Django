@@ -45,6 +45,7 @@ def main():
     except PermissionError as err:
         print(err)
         exit(1)
+    print('Successfully generated periodic table `periodic_table.html`.')
 
 
 def generate_element_cell(element):
