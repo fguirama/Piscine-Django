@@ -8,18 +8,50 @@ class Text(str):
     Because directly using str class was too mainstream.
     """
 
+    @staticmethod
+    def escape(s):
+        """
+        Replace special characters "&", "<" and ">" to HTML-safe sequences.
+        If the optional flag quote is true (the default), the quotation mark
+        characters, both double quote (") and single quote (') characters are also
+        translated.
+        """
+        s = s.replace("&", "&amp;")  # Must be done first!
+        s = s.replace("<", "&lt;")
+        s = s.replace(">", "&gt;")
+        s = s.replace('"', "&quot;")
+        s = s.replace('\'', "&#x27;")
+        return s
+
+    @staticmethod
+    def unscape(s):
+        """
+        The reverse of escape().
+        """
+        s = s.replace("&lt;", "<")
+        s = s.replace("&gt;", ">")
+        s = s.replace("&quot;", '"')
+        s = s.replace("&#x27;", '\'')
+        s = s.replace("&amp;", "&")  # Must be done last!
+        return s
+
     def __str__(self):
         """
         Do you really need a comment to understand this method?..
         """
-        return super().__str__().replace('\n', '\n<br />\n')
+        return Text.escape(super().__str__()).replace('\n', '\n<br />\n')
 
 
 class Elem:
     """
     Elem will permit us to represent our HTML elements.
     """
-    [...]
+
+    class ValidationError(Exception):
+        def __init__(self, msg_error=None):
+            if msg_error is None:
+                msg_error = 'Validation Error: content must be of type Elem, Text or list of both.'
+            super().__init__(msg_error)
 
     def __init__(self, tag='div', attr={}, content=None, tag_type='double'):
         """
@@ -27,7 +59,15 @@ class Elem:
 
         Obviously.
         """
-        [...]
+        self.tag = tag
+        if tag_type not in ('double', 'simple'):
+            raise Elem.ValidationError('Wrong tag_type value, must be "double" or "simple".')
+        self.tag_type = tag_type
+        self.attr = attr
+        self.content = []
+
+        if content is not None:
+            self.add_content(content)
 
     def __str__(self):
         """
@@ -36,10 +76,15 @@ class Elem:
         Make sure it renders everything (tag, attributes, embedded
         elements...).
         """
+        attrs = self.__make_attr()
+        result = f'<{self.tag}{attrs}'
         if self.tag_type == 'double':
-            [...]
+            content = self.__make_content()
+            if content:
+                content = content.replace('\n', '\n  ', content.count('\n') - 1)
+            result += f'>{content}</{self.tag}>'
         elif self.tag_type == 'simple':
-            [...]
+            result += f' />'
         return result
 
     def __make_attr(self):
@@ -60,7 +105,9 @@ class Elem:
             return ''
         result = '\n'
         for elem in self.content:
-            result += [...]
+            if type(elem) is Text:
+                elem = Text.unscape(elem)
+            result += f'{elem}\n'
         return result
 
     def add_content(self, content):
@@ -84,4 +131,13 @@ class Elem:
 
 
 if __name__ == '__main__':
-    [...]
+    page = Elem('html', content=[
+        Elem('head', content=[
+            Elem('title', content=Text('"Hello ground!"')),
+        ]),
+        Elem('body', content=[
+            Elem('h1', content=Text('"Oh no, not again!"')),
+            Elem('img', attr={'src': 'http://i.imgur.com/pfp3T.jpg'}, tag_type='simple')
+        ]),
+    ])
+    print(page)
