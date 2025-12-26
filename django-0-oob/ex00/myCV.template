@@ -1,0 +1,67 @@
+<style>
+    table {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+    }
+</style>
+<h1>CV</h1>
+
+<section>
+    <h2>Personal Information</h2>
+    <p><strong>Last Name:</strong>{last_name}</p>
+    <p><strong>First Name:</strong>{first_name}</p>
+    <p>Age: {age}</p>
+</section>
+
+<section>
+    <h2>Skills</h2>
+    <ul>
+        <li>{skills_1}</li>
+        <li>{skills_2}</li>
+        <li>{skills_3}</li>
+        <li>{skills_4}</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Education</h2>
+    <table>
+        <tr>
+            <th>Year</th>
+            <th>Institution</th>
+            <th>Degree</th>
+        </tr>
+        <tr>
+            <td>{education_1_year}</td>
+            <td>{education_1_place}</td>
+            <td>{education_1_degree}</td>
+        </tr>
+        <tr>
+            <td>{education_2_year}</td>
+            <td>{education_2_place}</td>
+            <td>{education_2_degree}</td>
+        </tr>
+    </table>
+</section>
+
+<section>
+    <h2>Professional Experience</h2>
+    <table>
+        <tr>
+            <th>Period</th>
+            <th>Company</th>
+        </tr>
+        <tr>
+            <td>{profesionnal_1_year}</td>
+            <td>{profesionnal_1_company}</td>
+        </tr>
+        <tr>
+            <td>{profesionnal_2_year}</td>
+            <td>{profesionnal_2_company}</td>
+        </tr>
+    </table>
+</section>

@@ -53,7 +53,7 @@ class Elem:
                 msg_error = 'Validation Error: content must be of type Elem, Text or list of both.'
             super().__init__(msg_error)
 
-    def __init__(self, tag='div', attr={}, content=None, tag_type='double'):
+    def __init__(self, tag='div', attr=None, content=None, tag_type='double'):
         """
         __init__() method.
 
@@ -63,7 +63,7 @@ class Elem:
         if tag_type not in ('double', 'simple'):
             raise Elem.ValidationError('Wrong tag_type value, must be "double" or "simple".')
         self.tag_type = tag_type
-        self.attr = attr
+        self.attr = attr if attr is not None else {}
         self.content = []
 
         if content is not None:
