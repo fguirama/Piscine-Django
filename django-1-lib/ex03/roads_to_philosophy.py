@@ -1,12 +1,15 @@
 import sys
-import time
 
 import requests
 from bs4 import BeautifulSoup
 
 
 class WikiPage:
-    BASE_URL = 'https://en.wikipedia.org/wiki/{title}'
+    WIKI = '/wiki/'
+    BASE_URL = 'https://en.wikipedia.org' + WIKI + '{title}'
+
+    class NoLinkFound(Exception):
+        pass
 
     def __init__(self, url):
         response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -21,10 +24,31 @@ class WikiPage:
         return self.title == other.title
 
     def __get_first_link(self, bs):
-        for link in bs.select('#bodyContent p a'):
-            if link['href'].startswith('/wiki/'):
-                return self.BASE_URL.format(title=link['href'].removeprefix('/wiki/'))
-        raise Exception
+        if bs.find(id='noarticletext'):
+            raise WikiPage.NoLinkFound
+        for link in bs.select('#bodyContent p a, #bodyContent ul a'):
+            if (
+                    not link.has_attr('href') or
+                    not link['href'].startswith(self.WIKI) or
+                    link.find_parent('table')
+            ):
+                continue
+
+            paragraph = link.find_parent('p')
+            if paragraph:
+                text_before_link = ''
+                for elem in paragraph.descendants:
+                    if elem == link:
+                        break
+                    if isinstance(elem, str):
+                        text_before_link += elem
+                
+                open_parens = text_before_link.count('(') - text_before_link.count(')')
+                if open_parens > 0:
+                    continue
+            
+            return self.BASE_URL.format(title=link['href'].removeprefix(self.WIKI))
+        raise WikiPage.NoLinkFound
 
 
 def main():
@@ -38,20 +62,17 @@ def main():
     while True:
         try:
             page = WikiPage(url)
-        except Exception:
-            raise Exception(f'fetching {url}')
+        except WikiPage.NoLinkFound:
+            print('It leads to a dead end !')
+            return
         print(page.title)
         if page in roads:
             print('It leads to an infinite loop !')
-            return
-        if page.first_link is None:
-            print('It leads to a dead end !')
             return
         if page.title == 'Philosophy':
             break
         roads.append(page)
         url = page.first_link
-        time.sleep(2)
 
     print(f'{len(roads)} roads from {query} to philosophy')
 
