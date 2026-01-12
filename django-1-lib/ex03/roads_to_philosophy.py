@@ -12,7 +12,7 @@ class WikiPage:
         pass
 
     def __init__(self, url):
-        response = requests.get(url, headers={'User-Agent': 'Mozilla/5.0'})
+        response = requests.get(url, headers={'User-Agent': 'DjangoPiscine-d04/1.0'})
         html = response.text
         bs = BeautifulSoup(html, 'html.parser')
         self.title = bs.find('h1').text
