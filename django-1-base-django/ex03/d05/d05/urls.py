@@ -22,8 +22,8 @@ from ex02.views import ex02_form
 from ex03.views import ex03_table
 
 urlpatterns = [
-    path('ex00', ex00_template, name='ex00'),
+    path('ex00/', ex00_template, name='ex00'),
     path('ex01/', include('ex01.urls')),
-    path('ex02', ex02_form, name='ex02'),
-    path('ex03', ex03_table, name='ex03'),
+    path('ex02/', ex02_form, name='ex02'),
+    path('ex03/', ex03_table, name='ex03'),
 ]
