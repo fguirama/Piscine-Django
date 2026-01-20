@@ -1,3 +1,8 @@
 from django.shortcuts import render
 
-# Create your views here.
+from ex00.models import create_movies_table
+
+
+def ex00_view(request):
+    context = create_movies_table()
+    return render(request, 'create_sql.html', context)
