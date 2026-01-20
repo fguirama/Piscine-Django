@@ -1,5 +1,5 @@
 #!/bin/bash
 
 source django_venv/bin/activate
-cd d05
+cd d04
 python manage.py runserver
