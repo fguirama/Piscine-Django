@@ -1,17 +1,14 @@
-import psycopg2
+from ex00.sql import connect_postgres
 
 
-def create_movies_table():
-    conn = psycopg2.connect(
-        dbname='djangotraining',
-        user='djangouser',
-        password='secret',
-        host='localhost'
-    )
+def create_movies_table(exersice):
+    conn = connect_postgres()
+    if not conn:
+        return {'status': 'KO', 'text': 'Error connecting to database'}
 
     try:
         with conn.cursor() as cursor:
-            cursor.execute("""CREATE TABLE IF NOT EXISTS ex00_movies (
+            cursor.execute(f"""CREATE TABLE IF NOT EXISTS ex0{exersice}_movies (
                 title VARCHAR(64) UNIQUE NOT NULL,
                 episode_nb INTEGER PRIMARY KEY,
                 opening_crawl TEXT,
