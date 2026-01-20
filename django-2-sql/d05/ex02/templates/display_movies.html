@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}d05/Exercise 02: SQL - Data insertion{% endblock %}
+
+{% block content %}
+
+{% if movies %}
+  {% for movie in movies %}
+      <p>{{ movie.episode_nb }}. <strong>{{ movie.title }}</strong> - {{ movie.release_date|date:"Y" }} ({{ movie.director }} / {{ movie.producer }}) : {{ movie.opening_crawl }}</p>
+  {% endfor %}
+{% else %}
+  <p>No data available</p>
+{% endif %}
+
+{% endblock %}
