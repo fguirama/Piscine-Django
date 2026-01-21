@@ -17,8 +17,8 @@ def ex05_remove(request, n=5, movies_database=Movies):
     status = None
     if request.method == 'POST':
         title = request.POST.get('movie')
-        a = movies_database.objects.filter(title=title).delete()
-        if a[0]:
+        res = movies_database.objects.filter(title=title).delete()
+        if res[0]:
             status = {'status': 'OK', 'text': 'Data removed successfully!'}
         else:
             status = {'status': 'KO', 'text': f'No movie found with title "{title}"'}
