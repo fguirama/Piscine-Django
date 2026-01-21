@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}d05/Exercise 0{{ n }}: {{ data_source }} - Foreign Key{% endblock %}
+
+{% block css %}
+  {% include "component/css_table.html" %}
+{% endblock %}
+
+{% block content %}
+
+{% if peoples %}
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Homeworld</th>
+      <th>Climate</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in peoples %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>{{ p.homeworld }}</td>
+      <td>{{ p.climate }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="3" style="text-align:center;">No people found</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No data available</p>
+  {% if status %}
+    {% include "component/status.html" with status=status text=text %}
+  {% endif %}
+{% endif %}
+
+
+
+{% endblock %}
