@@ -2,12 +2,61 @@
 
 {% block title %}d05/Exercise 0{{ n }}: SQL - Data insertion{% endblock %}
 
+
+{% block css %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #333;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #9bdeff;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 
 {% if movies %}
-  {% for movie in movies %}
-      <p>{{ movie.episode_nb }}. <strong>{{ movie.title }}</strong> - {{ movie.release_date|date:"Y" }} ({{ movie.director }} / {{ movie.producer }}) : {{ movie.opening_crawl }}</p>
-  {% endfor %}
+    <table>
+        <thead>
+        <tr>
+            <th>Episode</th>
+            <th>Title</th>
+            <th>Director</th>
+            <th>Producer</th>
+            <th>Release Date</th>
+            <th>Opening Crawl</th>
+            {% if n >= 6 %}
+                <th>Created</th>
+                <th>Updated</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for movie in movies %}
+        <tr>
+            <td>{{ movie.episode_nb }}</td>
+            <td>{{ movie.title }}</td>
+            <td>{{ movie.director }}</td>
+            <td>{{ movie.producer }}</td>
+            <td>{{ movie.release_date|date:"d M Y" }}</td>
+            <td>{{ movie.opening_crawl }}</td>
+            {% if n >= 6 %}
+                <td>{{ movie.created|date:"d M Y H:i" }}</td>
+                <td>{{ movie.updated|date:"d M Y H:i" }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% else %}
   <p>No data available</p>
 {% endif %}
