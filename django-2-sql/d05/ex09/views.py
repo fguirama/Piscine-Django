@@ -4,6 +4,6 @@ from ex09.models import People
 
 
 def ex09_display(request):
-    no_data_text = 'No data available, please use the following command line before use: <code>python3 manage.py loaddata people.json</code>'
+    command_line = 'python3 d05/manage.py loaddata d05/ex09/ex09_initial_data.json'
     peoples = People.objects.filter(homeworld__climate__icontains='windy').order_by('name').values('name', 'homeworld__name', 'homeworld__climate')
-    return render(request, 'display_people.html', {'peoples': peoples, 'no_data_text': no_data_text, 'n': 9, 'data_source': 'ORM'})
+    return render(request, 'display_people.html', {'peoples': peoples, 'command_line': command_line, 'n': 9, 'data_source': 'ORM'})

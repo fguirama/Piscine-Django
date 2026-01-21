@@ -41,7 +41,13 @@
     </tbody>
   </table>
 {% else %}
-  <p>{{ no_data_text|safe|default:"No data available" }}</p>
+    <p>
+      {% if command_line %}
+        No data available, please use the following command line before use: <code>{{ command_line }}</code>
+      {% else %}
+        No data available
+    </p>
+  {% endif %}
   {% if status %}
     {% include "component/status.html" with status=status text=text %}
   {% endif %}
