@@ -30,12 +30,8 @@
     {% for p in peoples %}
     <tr>
       <td>{{ p.name }}</td>
-      <td>{{ p.homeworld }}</td>
-      <td>{{ p.climate }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="3" style="text-align:center;">No people found</td>
+      <td>{% if p.homeworld %}{{ p.homeworld }}{% else %}{{ p.homeworld__name }}{% endif%}</td>
+      <td>{% if p.climate %}{{ p.climate }}{% else %}{{ p.homeworld__climate }}{% endif%}</td>
     </tr>
     {% endfor %}
     </tbody>
