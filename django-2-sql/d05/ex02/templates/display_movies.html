@@ -4,22 +4,7 @@
 
 
 {% block css %}
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        border: 1px solid #333;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #9bdeff;
-    }
-</style>
+    {% include "component/css_table.html" %}
 {% endblock %}
 
 {% block content %}
