@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}d05/Exercice 0{{ n }}: SQL - building a table{% endblock %}
+
+{% block content %}
+
+{% if status %}
+    {% include "status.html" with status=status text=text %}
+{% endif %}
+
+{% if statuses %}
+    {% for status in statuses %}
+        {% include "status.html" with status=status.status text=status.text %}
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
