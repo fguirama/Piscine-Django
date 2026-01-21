@@ -21,7 +21,6 @@ def ex08_populate(request):
     return render_status(request, {'statuses': [planets, peoples]}, 8)
 
 
-def ex08_display(request, n=8, data_source='SQL'):
-    data = make_query(get_sql_data, n, error='fetching data')
-    print('DATA', data, flush=True)
-    return render(request, 'display_people.html', {**data, 'n': n, 'data_source': data_source})
+def ex08_display(request):
+    data = make_query(get_sql_data, 8, error='fetching data')
+    return render(request, 'display_people.html', {**data, 'n': 8, 'data_source': 'SQL'})
