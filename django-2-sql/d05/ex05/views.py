@@ -13,7 +13,7 @@ def ex05_display(request):
     return ex03_display(request, 5, Movies)
 
 
-def ex05_remove(request, n=5, movies_database=Movies):
+def ex05_remove(request, n=5, movies_database=Movies, data_source='ORM'):
     status = None
     if request.method == 'POST':
         title = request.POST.get('movie')
@@ -24,4 +24,4 @@ def ex05_remove(request, n=5, movies_database=Movies):
             status = {'status': 'KO', 'text': f'No movie found with title "{title}"'}
 
     data = get_orm_data(movies_database)
-    return render(request, 'remove_movie.html', {**data, 'n': n, 'status': status})
+    return render(request, 'remove_movie.html', {**data, 'n': n, 'data_source': data_source, 'status': status})

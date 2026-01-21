@@ -25,11 +25,11 @@ def ex06_remove(request):
     return ex04_remove(request, 6)
 
 
-def ex06_update(request, n=6):
+def ex06_update(request, n=6, data_source='SQL'):
     status = None
     if request.method == 'POST':
         title = request.POST.get('movie')
         opening_crawl = request.POST.get('opening_crawl')
         status = make_query(update_sql_data, n, error='updating data', title=title, opening_crawl=opening_crawl)
     data = make_query(get_sql_data, n, error='fetching data')
-    return render(request, 'update_movies.html', {**data, 'n': n, 'status': status})
+    return render(request, 'update_movies.html', {**data, 'n': n, 'data_source': data_source, 'status': status})

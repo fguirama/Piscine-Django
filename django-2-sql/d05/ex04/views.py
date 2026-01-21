@@ -19,11 +19,11 @@ def ex04_display(request):
     return ex02_display(request, 4)
 
 
-def ex04_remove(request, n=4):
+def ex04_remove(request, n=4, data_source='SQL'):
     status = None
     if request.method == 'POST':
         title = request.POST.get('movie')
         status = make_query(remove_sql_data, n, error='removing data', title=title)
 
     data = make_query(get_sql_data, n, error='fetching data')
-    return render(request, 'remove_movie.html', {**data, 'n': n, 'status': status})
+    return render(request, 'remove_movie.html', {**data, 'n': n, 'data_source': data_source, 'status': status})

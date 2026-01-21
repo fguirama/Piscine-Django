@@ -9,5 +9,5 @@ def ex00_init(request, n=0):
     return render_status(request, context, n)
 
 
-def render_status(request, context, n):
-    return render(request, 'page_status.html', {**context, 'n': n})
+def render_status(request, context, n, data_source='SQL'):
+    return render(request, 'page_status.html', {**context, 'n': n, 'data_source': data_source})

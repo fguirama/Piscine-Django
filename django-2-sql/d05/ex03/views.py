@@ -9,6 +9,6 @@ def ex03_populate(request, n=3, movies_database=Movies):
     return render_status(request, context, n)
 
 
-def ex03_display(request, n=3, movies_database=Movies):
+def ex03_display(request, n=3, movies_database=Movies, data_source='ORM'):
     data = get_orm_data(movies_database)
-    return render(request, 'display_movies.html', {**data, 'n': n})
+    return render(request, 'display_movies.html', {**data, 'n': n, 'data_source': data_source})

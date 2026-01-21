@@ -14,6 +14,6 @@ def ex02_populate(request, n=2):
     return render_status(request, context, n)
 
 
-def ex02_display(request, n=2):
+def ex02_display(request, n=2, data_source='SQL'):
     data = make_query(get_sql_data, n, error='fetching data')
-    return render(request, 'display_movies.html', {**data, 'n': n})
+    return render(request, 'display_movies.html', {**data, 'n': n, 'data_source': data_source})
