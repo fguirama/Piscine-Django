@@ -1,14 +1,14 @@
 from django.shortcuts import render
 
 from ex00.views import render_status
-from ex03.models import instert_sql_data, get_sql_data
+from ex03.models import instert_orm_data, get_orm_data, Movies
 
 
-def ex03_populate(request):
-    context = instert_sql_data()
-    return render_status(request, context, 3)
+def ex03_populate(request, n=3, movies_database=Movies):
+    context = instert_orm_data(movies_database)
+    return render_status(request, context, n)
 
 
-def ex03_display(request):
-    data = get_sql_data()
-    return render(request, 'display_movies.html', {**data, 'n': 3})
+def ex03_display(request, n=3, movies_database=Movies):
+    data = get_orm_data(movies_database)
+    return render(request, 'display_movies.html', {**data, 'n': n})

@@ -13,7 +13,7 @@ class Movies(models.Model):
         return self.title
 
 
-def instert_sql_data():
+def instert_orm_data(movies_database):
     status = []
     movies = [
         {'episode_nb': 1, 'title': 'The Phantom Menace', 'director': 'George Lucas', 'producer': 'Rick McCallum', 'release_date': '1999-05-19'},
@@ -27,7 +27,7 @@ def instert_sql_data():
 
     for movie in movies:
         try:
-            Movies.objects.create(**movie)
+            movies_database.objects.create(**movie)
             status.append({'status': 'OK', 'text': f'Insert {movie["title"]} successfully!'})
         except Exception as e:
             status.append({'status': 'KO', 'text': f'Error inserting data: {e}'})
@@ -35,8 +35,8 @@ def instert_sql_data():
     return {'statuses': status}
 
 
-def get_sql_data():
+def get_orm_data(movies_database):
     try:
-        return {'movies': Movies.objects.all().order_by('episode_nb'), 'status': 'OK'}
+        return {'movies': movies_database.objects.all().order_by('episode_nb'), 'status': 'OK'}
     except Exception as e:
         return {'movies': [], 'status': 'KO', 'text': f'Error fetching data: {e}'}
