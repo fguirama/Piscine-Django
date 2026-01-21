@@ -14,6 +14,7 @@ class Movies(models.Model):
 
 
 def instert_sql_data():
+    status = []
     movies = [
         {'episode_nb': 1, 'title': 'The Phantom Menace', 'director': 'George Lucas', 'producer': 'Rick McCallum', 'release_date': '1999-05-19'},
         {'episode_nb': 2, 'title': 'Attack of the Clones', 'director': 'George Lucas', 'producer': 'Rick McCallum', 'release_date': '2002-05-16'},
@@ -24,13 +25,14 @@ def instert_sql_data():
         {'episode_nb': 7, 'title': 'The Force Awakens', 'director': 'J. J. Abrams', 'producer': 'Kathleen Kennedy, J. J. Abrams, Bryan Burk', 'release_date': '2015-12-11'}
     ]
 
-    try:
-        for movie in movies:
+    for movie in movies:
+        try:
             Movies.objects.create(**movie)
-    except Exception as e:
-        return {'status': 'KO', 'text': f'Error inserting data: {e}'}
+            status.append({'status': 'OK', 'text': f'Insert {movie["title"]} successfully!'})
+        except Exception as e:
+            status.append({'status': 'KO', 'text': f'Error inserting data: {e}'})
 
-    return {'status': 'OK', 'text': 'Data inserted successfully!'}
+    return {'statuses': status}
 
 
 def get_sql_data():
