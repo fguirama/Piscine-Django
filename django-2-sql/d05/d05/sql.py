@@ -1,5 +1,5 @@
 import psycopg2
-from psycopg2.extras import DictCursor
+from psycopg2.extras import RealDictCursor
 
 
 def connect_postgres():
@@ -20,7 +20,7 @@ def make_query(function, n, error='', **kwargs):
         return {'status': 'KO', 'text': 'Error connecting to database'}
 
     try:
-        with conn.cursor(cursor_factory=DictCursor) as cursor:
+        with conn.cursor(cursor_factory=RealDictCursor) as cursor:
             context = function(conn, cursor, n, **kwargs)
 
     except Exception as e:
