@@ -1,9 +1,5 @@
-from psycopg2.extras import DictCursor
-
-from ex00.sql import connect_postgres
-
-
-def instert_sql_data(n):
+def instert_sql_data(conn, cursor, n):
+    status = []
     movies = [
         (1, 'The Phantom Menace', 'George Lucas', 'Rick McCallum', '1999-05-19'),
         (2, 'Attack of the Clones', 'George Lucas', 'Rick McCallum', '2002-05-16'),
@@ -14,45 +10,21 @@ def instert_sql_data(n):
         (7, 'The Force Awakens', 'J. J. Abrams', 'Kathleen Kennedy, J. J. Abrams, Bryan Burk', '2015-12-11'),
     ]
 
-    conn = connect_postgres()
-    if not conn:
-        return {'status': 'KO', 'text': 'Error connecting to database'}
+    query = f'INSERT INTO ex0{n}_movies (episode_nb, title, director, producer, release_date) VALUES (%s, %s, %s, %s, %s);'
 
-    try:
-        cur = conn.cursor()
-        query = f'INSERT INTO ex0{n}_movies (episode_nb, title, director, producer, release_date) VALUES (%s, %s, %s, %s, %s);'
-
-        for movie in movies:
-            cur.execute(query, movie)
+    for movie in movies:
+        try:
+            cursor.execute(query, movie)
             conn.commit()
+            status.append({'status': 'OK', 'text': f'Insert {movie[1]} successfully!'})
+        except Exception as e:
+            conn.rollback()
+            status.append({'status': 'KO', 'text': f'Error inserting data: {e}'})
 
-        cur.close()
-        conn.close()
-        context = {'status': 'OK', 'text': 'Data inserted successfully!'}
-
-    except Exception as e:
-        context = {'status': 'KO', 'text': f'Error inserting data: {e}'}
-    finally:
-        conn.close()
-    return context
+    return {'statuses': status}
 
 
-def get_sql_data(n):
-    conn = connect_postgres()
-    if not conn:
-        return {'movies': [], 'status': 'KO', 'text': 'Error connecting to database'}
-
-    try:
-        cur = conn.cursor(cursor_factory=DictCursor)
-
-        cur.execute('SELECT * FROM ex0%s_movies ORDER BY episode_nb;', (n, ))
-        rows = cur.fetchall()
-
-        cur.close()
-        conn.close()
-        context = {'movies': rows, 'status': 'OK'}
-    except Exception as e:
-        context = {'movies': [], 'status': 'KO', 'text': f'Error fetching data: {e}'}
-    finally:
-        conn.close()
-    return context
+def get_sql_data(_, cursor, n):
+    cursor.execute('SELECT * FROM ex0%s_movies ORDER BY episode_nb;', (n, ))
+    rows = cursor.fetchall()
+    return {'movies': rows, 'status': 'OK'}
