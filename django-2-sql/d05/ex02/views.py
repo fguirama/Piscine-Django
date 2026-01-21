@@ -15,4 +15,4 @@ def ex02_populate(request, n=2):
 
 def ex02_display(request, n=2):
     data = get_sql_data(n)
-    return render(request, 'display_movies.html', data)
+    return render(request, 'display_movies.html', {**data, 'n': n})

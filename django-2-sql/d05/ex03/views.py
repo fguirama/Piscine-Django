@@ -11,4 +11,4 @@ def ex03_populate(request):
 
 def ex03_display(request):
     data = get_sql_data()
-    return render(request, 'display_movies.html', data)
+    return render(request, 'display_movies.html', {**data, 'n': 3})
