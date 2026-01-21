@@ -24,5 +24,4 @@ def ex05_remove(request, n=5, movies_database=Movies):
             status = {'status': 'KO', 'text': f'No movie found with title "{title}"'}
 
     data = get_orm_data(movies_database)
-    print('ex05_remove', data, flush=True)
     return render(request, 'remove_movie.html', {**data, 'n': n, 'status': status})
