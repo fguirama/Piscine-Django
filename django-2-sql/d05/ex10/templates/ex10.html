@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}d05/Exercise 10: ORM - Many to Many{% endblock %}
+
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+{% if results %}
+    <ul>
+        {% for r in results %}
+        <li>
+            {{ r.name }} - {{ r.gender }} - {{ r.movie }} - {{ r.planet }} - {{ r.diameter }}
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    {% if form.is_bound %}
+        <p>Nothing corresponding to your research</p>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
