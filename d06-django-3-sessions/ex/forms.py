@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
+from ex.models import Tip
+
 
 class SignupForm(forms.Form):
     username = forms.CharField(label='Username', max_length=150)
@@ -37,3 +39,9 @@ class LoginForm(forms.Form):
             if not user:
                 raise forms.ValidationError('Invalid credentials.')
             self.user = user
+
+
+class TipsForm(forms.ModelForm):
+    class Meta:
+        model = Tip
+        fields = ['content']

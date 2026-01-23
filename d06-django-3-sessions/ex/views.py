@@ -2,11 +2,25 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
-from ex.forms import SignupForm, LoginForm
+from ex.forms import SignupForm, LoginForm, TipsForm
+from ex.models import Tip
 
 
 def index_view(request):
-    return render(request, 'base.html')
+    form = None
+    tips = Tip.objects.select_related('author').order_by('-date')
+
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = TipsForm(request.POST)
+            if form.is_valid():
+                tip = form.save(commit=False)
+                tip.author = request.user
+                tip.save()
+                return redirect('home')
+        else:
+            form = TipsForm()
+    return render(request, 'home.html', {'tips': tips, 'form': form})
 
 
 def login_view(request):

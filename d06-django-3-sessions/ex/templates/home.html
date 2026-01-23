@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <p>Create a new tip</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create</button>
+    </form>
+{% endif %}
+
+{% for tip in tips %}
+<div>
+    <p>{{ tip.content }}</p>
+    <p>
+        By {{ tip.author.username }} - {{ tip.date|date:"d M H:i" }}
+    </p>
+</div>
+{% endfor %}
+
+{% endblock %}
