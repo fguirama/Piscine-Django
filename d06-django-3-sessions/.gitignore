@@ -6,3 +6,4 @@
 !**/migrations/__init__.py
 django_venv
 run_server.sh
+db.sqlite3
