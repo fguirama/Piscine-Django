@@ -1,0 +1,36 @@
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Life Pro Tips</title>
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+</head>
+<body>
+
+<nav>
+  <a href="/">Life Pro Tips</a>
+
+  <div>
+    {% if user.is_authenticated %}
+      <p>
+        Hello {{ user.username }} !
+      </p>
+      <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+      <p>
+        Hello {{ request.anon_username }} !
+      </p>
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'signup' %}">Signup</a>
+    {% endif %}
+  </div>
+</nav>
+
+<div>
+  {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
