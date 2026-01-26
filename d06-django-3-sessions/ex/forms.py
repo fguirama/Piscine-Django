@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
 
-from ex.models import Tip
+from ex.models import Tip, User
 
 
 class SignupForm(forms.Form):
