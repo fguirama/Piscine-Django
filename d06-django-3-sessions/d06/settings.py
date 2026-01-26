@@ -29,6 +29,9 @@ RANDOM_USERNAME = [
     'Dionysus',
 ]
 
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+AUTH_USER_MODEL = 'ex.User'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
