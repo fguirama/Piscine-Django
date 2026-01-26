@@ -44,3 +44,9 @@ class TipsForm(forms.ModelForm):
     class Meta:
         model = Tip
         fields = ['content']
+        labels = {
+            'content': 'Your Life Pro Tip',
+        }
+        widgets = {
+            'content': forms.Textarea(attrs={'placeholder': 'Share your best life advice...', 'rows': 3}),
+        }
