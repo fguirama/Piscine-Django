@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Permission
 from django.db import models
 
 
@@ -9,19 +9,21 @@ class User(AbstractUser):
         tips = self.tips.all()
         total = 0
         for tip in tips:
-            total += tip.upvotes.count() * 5
-            total -= tip.downvotes.count() * 2
+            total += tip.upvotes.exclude(id=self.id).count() * 5
+            total -= tip.downvotes.exclude(id=self.id).count() * 2
         self.rep_point = total
         self.save()
+        downvote_perm = Permission.objects.get(codename='downvote_tip', content_type__app_label='ex')
         if self.rep_point >= 15:
-            self.user_permissions.add('ex.can_downvote_tip')
+            self.user_permissions.add(downvote_perm)
         else:
-            self.user_permissions.remove('ex.delete_tip')
+            self.user_permissions.remove(downvote_perm)
 
+        delete_perm = Permission.objects.get(codename='delete_tip', content_type__app_label='ex')
         if self.rep_point >= 30:
-            self.user_permissions.add('ex.delete_tip')
+            self.user_permissions.add(delete_perm)
         else:
-            self.user_permissions.remove('ex.delete_tip')
+            self.user_permissions.remove(delete_perm)
 
 
 class Tip(models.Model):
@@ -39,5 +41,5 @@ class Tip(models.Model):
 
     class Meta:
         permissions = [
-            ('can_downvote_tip', 'Can downvote tips'),
+            ('downvote_tip', 'Can downvote tips'),
         ]
