@@ -13,21 +13,20 @@ class User(AbstractUser):
             total -= tip.downvotes.count() * 2
         self.rep_point = total
         self.save()
+        if self.rep_point >= 15:
+            self.user_permissions.add('ex.can_downvote_tip')
+        else:
+            self.user_permissions.remove('ex.delete_tip')
 
-    def can_downvote(self, tip=None):
-        if tip and tip.author == self:
-            return True
-        return self.reputation >= 15
-
-    def can_delete_tip(self, tip=None):
-        if tip and tip.author == self:
-            return True
-        return self.reputation >= 30
+        if self.rep_point >= 30:
+            self.user_permissions.add('ex.delete_tip')
+        else:
+            self.user_permissions.remove('ex.delete_tip')
 
 
 class Tip(models.Model):
     content = models.TextField()
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tips')
     date = models.DateTimeField(auto_now_add=True)
     upvotes = models.ManyToManyField(User, related_name='upvotes')
     downvotes = models.ManyToManyField(User, related_name='downvotes')
