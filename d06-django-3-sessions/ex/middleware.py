@@ -12,8 +12,12 @@ class AnonymousUserMiddleware:
 
         if 'anon_username' not in session:
             session['anon_username'] = random.choice(RANDOM_USERNAME)
-            session.set_expiry(42)
 
+        if not request.user.is_authenticated:
+            session.set_expiry(40)
+        else:
+            session.set_expiry(None)
+        
         request.anon_username = session['anon_username']
 
         return self.get_response(request)
