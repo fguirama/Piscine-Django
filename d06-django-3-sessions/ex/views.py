@@ -21,7 +21,7 @@ def index_view(request):
                 return redirect('home')
         else:
             form = TipsForm()
-    return render(request, 'home.html', {'tips': tips, 'form': form, 'can_delete': request.user.has_perm('ex.delete_tip'), 'can_downvote': request.user.has_perm('ex.can_downvote_tip')})
+    return render(request, 'home.html', {'tips': tips, 'form': form, 'can_delete': request.user.has_perm('ex.delete_tip'), 'can_downvote': request.user.has_perm('ex.downvote_tip')})
 
 
 def login_view(request):
@@ -66,7 +66,7 @@ def upvote_downvote_tip(request, tip_id):
     user = request.user
 
     action = 'upvotes' if request.resolver_match.url_name is 'upvote_tip' else 'downvotes'
-    if action == 'upvotes' or (user == tip.author or user.has_perm('ex.can_downvote_tip')):
+    if action == 'upvotes' or user == tip.author or user.has_perm('ex.downvote_tip'):
         a = getattr(tip, action)
         if user in a.all():
             a.remove(user)
@@ -76,6 +76,8 @@ def upvote_downvote_tip(request, tip_id):
             if user in o.all():
                 o.remove(user)
             a.add(user)
+        tip.author.update_reputation()
+        return redirect('home')
 
     raise PermissionDenied
 
@@ -86,7 +88,9 @@ def delete_tip(request, tip_id):
     user = request.user
 
     if user == tip.author or user.has_perm('ex.delete_tip'):
+        author = tip.author
         tip.delete()
+        author.update_reputation()
         return redirect('home')
 
     raise PermissionDenied
