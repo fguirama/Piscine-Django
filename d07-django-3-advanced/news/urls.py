@@ -19,6 +19,7 @@ from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import path, include
 from django.views.generic import RedirectView
 
+from news.views import RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('', include('articles.urls')),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
 ]
