@@ -17,4 +17,4 @@ class UserFavouriteArticle(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, null=False)
 
     def __str__(self):
-        return self.article
+        return str(self.article)

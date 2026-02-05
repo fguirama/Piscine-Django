@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block css %}
+table {
+width: 100%;
+border-collapse: collapse;
+margin: 20px 0;
+font-family: Arial, sans-serif;
+}
+
+td, th {
+padding: 12px 15px;
+text-align: left;
+border: 1px solid #ddd;
+}
+
+th {
+background-color: #4CAF50;
+color: white;
+font-weight: bold;
+}
+
+tr:nth-child(even) {
+background-color: #f2f2f2;
+}
+
+tr:hover {
+background-color: #e6e6e6;
+}
+{% endblock %}
+
+{% block content %}
+<table>
+{% block table %}{% endblock %}
+</table>
+{% endblock %}

@@ -1,24 +1,21 @@
 {% extends "table.html" %}
-{% block title %}Article list{% endblock %}
+{% block title %}My publications{% endblock %}
 
 {% block table %}
 <thead>
 <tr>
     <th>Title</th>
-    <th>Author</th>
-    <th>Date</th>
     <th>Synopsis</th>
+    <th>Date</th>
     <th>Detail</th>
 </tr>
 </thead>
-
 <tbody>
 {% for article in articles %}
 <tr>
     <td>{{ article.title }}</td>
-    <td>{{ article.author.username }}</td>
-    <td>{{ article.created|date:"H:i d M Y" }}</td>
     <td>{{ article.synopsis }}</td>
+    <td>{{ article.created }}</td>
     <td>
         <a href="{% url 'article-detail' article.id %}">See</a>
     </td>
