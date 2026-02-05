@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView
 
 from articles.models import Article, UserFavouriteArticle
 
@@ -32,3 +33,14 @@ class FavouriteListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return UserFavouriteArticle.objects.filter(user=self.request.user)
+
+
+class ArticleCreateView(LoginRequiredMixin, CreateView):
+    model = Article
+    fields = ['title', 'synopsis', 'content']
+    template_name = 'publish_article.html'
+    success_url = reverse_lazy('publications')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
