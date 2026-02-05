@@ -23,3 +23,7 @@
 {% endfor %}
 </tbody>
 {% endblock %}
+
+{% block extra_content %}
+<a href="{% url 'publish' %}">Publish an article</a>
+{% endblock %}
