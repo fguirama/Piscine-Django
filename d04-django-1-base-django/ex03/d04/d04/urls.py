@@ -17,13 +17,9 @@ Including another URLconf
 
 from django.urls import path, include
 
-from ex00.views import ex00_template
-from ex02.views import ex02_form
-from ex03.views import ex03_table
-
 urlpatterns = [
-    path('ex00/', ex00_template, name='ex00'),
+    path('ex00/', include('ex00.urls')),
     path('ex01/', include('ex01.urls')),
-    path('ex02/', ex02_form, name='ex02'),
-    path('ex03/', ex03_table, name='ex03'),
+    path('ex02/', include('ex02.urls')),
+    path('ex03/', include('ex03.urls')),
 ]
