@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Article list{% endblock %}
+
+{% block css %}
+table {
+    width: 100%
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+}
+
+td, th {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #e6e6e6;
+}
+{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Created</th>
+        <th>Synopsis</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for article in articles %}
+    <tr>
+        <td>{{ article.title }}</td>
+        <td>{{ article.author.username }}</td>
+        <td>{{ article.created|date:"H:i d M Y" }}</td>
+        <td>{{ article.synopsis }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
