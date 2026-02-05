@@ -9,6 +9,13 @@
 <p><strong>Date :</strong> {{ article.created }}</p>
 <p><strong>Synopsis :</strong> {{ article.synopsis }}</p>
 
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'add-favourite' article.id %}">
+    {% csrf_token %}
+    <button type="submit">Add to favorites ❤️</button>
+</form>
+{% endif %}
+
 <hr>
 
 <p>{{ article.content }}</p>
