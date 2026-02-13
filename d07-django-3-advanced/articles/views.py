@@ -9,6 +9,7 @@ class ArticleListView(ListView):
     model = Article
     template_name = 'article_list.html'
     context_object_name = 'articles'
+    ordering = ['-created']
 
 
 class PublicationListView(LoginRequiredMixin, ListView):

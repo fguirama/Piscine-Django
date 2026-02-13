@@ -6,8 +6,9 @@
 <tr>
     <th>Title</th>
     <th>Author</th>
-    <th>Date</th>
+    <th>Created</th>
     <th>Synopsis</th>
+    <th>Published since</th>
     <th>Detail</th>
 </tr>
 </thead>
@@ -18,7 +19,8 @@
     <td>{{ article.title }}</td>
     <td>{{ article.author.username }}</td>
     <td>{{ article.created|date:"H:i d M Y" }}</td>
-    <td>{{ article.synopsis }}</td>
+    <td>{{ article.synopsis|truncatechars:20 }}</td>
+    <td>{{ article.created|timesince }} ago</td>
     <td>
         <a href="{% url 'article-detail' article.id %}">See</a>
     </td>
