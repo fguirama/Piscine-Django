@@ -7,20 +7,38 @@
     <style>
         {% block css %}{% endblock %}
         * { font-family: sans-serif; }
+        .inline { display:inline; }
     </style>
 </head>
 <body>
 
-{% if user.is_authenticated %}
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-{% endif %}
+<nav>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'articles' %}">Last Articles</a>
 
-{% block content %}
+    {% if user.is_authenticated %}
+        <a href="{% url 'favourites' %}">Favourites</a>
+        <a href="{% url 'publications' %}">Publications</a>
 
-{% endblock %}
+        <span>Logged as {{ user.username }}</span>
+
+        <form method="post" action="{% url 'logout' %}" class="inline">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    {% else %}
+        <a href="{% url 'register' %}">Register</a>
+
+        <form method="post" action="{% url 'login' %}" class="inline">
+            {% csrf_token %}
+            {{ login_form.username }}
+            {{ login_form.password }}
+            <button type="submit">Login</button>
+        </form>
+    {% endif %}
+</nav>
+
+{% block content %} {% endblock %}
 
 </body>
 </html>
