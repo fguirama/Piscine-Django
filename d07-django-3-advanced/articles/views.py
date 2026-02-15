@@ -1,4 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError, transaction
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
@@ -55,7 +57,11 @@ class AddFavouriteView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         form.instance.article_id = self.kwargs['pk']
-        return super().form_valid(form)
+        try:
+            with transaction.atomic():
+                return super().form_valid(form)
+        except IntegrityError:
+            return redirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse_lazy('article-detail', kwargs={'pk': self.kwargs['pk']})
