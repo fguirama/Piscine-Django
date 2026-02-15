@@ -6,22 +6,18 @@
 {% endblock %}
 
 {% block content %}
-<div id="logged-block">
-    <h2>
-        Logged as <span id="logged-username">{{ user.username }}</span>
-    </h2>
-    <button id="logout-btn">Logout</button>
-</div>
 <div id="login-block">
     <h2>Login</h2>
-
     <div id="login-errors" style="color:red;"></div>
-
-    <form id="login-form">
+    <form id="login-form" method="post">
         {% csrf_token %}
-        <input type="text" name="username" placeholder="Username"><br>
-        <input type="password" name="password" placeholder="Password"><br>
+        {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
+</div>
+
+<div id="logged-block">
+    <h2>Logged as <span id="logged-username">{{ user.username }}</span></h2>
+    <button id="logout-btn">Logout</button>
 </div>
 {% endblock %}
