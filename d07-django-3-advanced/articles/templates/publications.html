@@ -1,14 +1,15 @@
 {% extends "base.html" %}
-{% block title %}My publications{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "My publications" %}{% endblock %}
 {% block publications_active %}active{% endblock %}
 
 {% block content %}
 <table class="table">
     <thead>
         <tr>
-            <th>Title</th>
-            <th>Synopsis</th>
-            <th>Created</th>
+            <th>{% trans "Title" %}</th>
+            <th>{% trans "Synopsis" %}</th>
+            <th>{% trans "Created" %}</th>
             <th></th>
         </tr>
     </thead>
@@ -19,12 +20,12 @@
                 <td>{{ article.synopsis }}</td>
                 <td>{{ article.created|date:"M. j, Y, P" }}</td>
                 <td>
-                    <a href="{% url 'article-detail' article.id %}" class="btn btn-info">Read</a>
+                    <a href="{% url 'article-detail' article.id %}" class="btn btn-info">{% trans "Read" %}</a>
                 </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<a href="{% url 'publish' %}" class="btn btn-primary">Publish an article</a>
+<a href="{% url 'publish' %}" class="btn btn-primary">{% trans "Publish an article" %}</a>
 {% endblock %}

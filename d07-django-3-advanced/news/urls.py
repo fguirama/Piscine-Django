@@ -18,14 +18,20 @@ from django.contrib import admin
 from django.contrib.auth.views import LogoutView, LoginView
 from django.urls import path, include
 from django.views.generic import RedirectView
+from django.conf.urls.i18n import i18n_patterns
+from django.views.i18n import set_language
 
 from news.views import RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('i18n/setlang/', set_language, name='set_language'),
+]
+
+urlpatterns += i18n_patterns(
     path('', RedirectView.as_view(pattern_name='articles', permanent=False), name='home'),
     path('', include('articles.urls')),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(next_page='home'), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
-]
+)
