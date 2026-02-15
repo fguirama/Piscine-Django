@@ -1,18 +1,3 @@
-function getCSRFToken() {
-    return document.cookie.split('; ')
-        .find(row => row.startsWith('csrftoken'))
-        ?.split('=')[1];
-}
-
-$.ajaxSetup({
-    beforeSend: function(xhr, settings) {
-        if (/^POST|PUT|PATCH|DELETE$/.test(settings.type)) {
-            xhr.setRequestHeader("X-CSRFToken", getCSRFToken());
-        }
-    }
-});
-
-
 function showLogin(errors = "") {
     console.log('showLogin');
     $("#login-errors").text(errors);
