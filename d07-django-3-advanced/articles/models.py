@@ -16,5 +16,8 @@ class UserFavouriteArticle(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=False)
     article = models.ForeignKey(Article, on_delete=models.CASCADE, null=False)
 
+    class Meta:
+        unique_together = ('user', 'article')
+
     def __str__(self):
         return str(self.article)
