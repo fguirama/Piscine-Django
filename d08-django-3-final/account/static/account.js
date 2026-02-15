@@ -1,3 +1,18 @@
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie_values = cookies[i].split('=');
+            if (cookie_values[0].trim() === name) {
+                cookieValue = cookie_values[1].trim();
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 function showLogin(errors = "") {
     console.log('showLogin');
     $("#login-errors").text(errors);
@@ -41,8 +56,8 @@ $(document).ready(function() {
         $.ajax({
             url: "/account/logout/",
             type: "POST",
-            data: {
-                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken')
             },
             success: function(response) {
                 if (response.success) {
@@ -51,5 +66,4 @@ $(document).ready(function() {
             }
         });
     });
-
 });
