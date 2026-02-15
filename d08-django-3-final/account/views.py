@@ -1,35 +1,32 @@
+from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 
 def account_view(request):
-    return render(request, 'account.html')
+    form = AuthenticationForm()
+    return render(request, 'account.html', {'form': form})
 
 
 @require_POST
 def login_view(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
+    form = AuthenticationForm(request, data=request.POST)
 
-    if not username or not password:
+    if form.is_valid():
+        user = form.get_user()
+        login(request, user)
         return JsonResponse({
-            'success': False,
-            'errors': 'Username and password required.'
+            'success': True,
+            'username': user.username
         })
 
-    user = authenticate(request, username=username, password=password)
-
-    if user is None:
-        return JsonResponse({
-            'success': False,
-            'errors': 'Invalid credentials.'
-        })
-
-    login(request, user)
-
-    return JsonResponse({'success': True, 'username': user.username})
+    errors = form.errors.as_json()
+    return JsonResponse({
+        'success': False,
+        'errors': errors
+    })
 
 
 @require_POST
