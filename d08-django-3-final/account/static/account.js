@@ -16,7 +16,6 @@ function getCookie(name) {
 function showLogin(errors = "") {
     if (errors !== "") {
         let errorsJSON = JSON.parse(errors);
-        console.log(errorsJSON.__all__[0].message);
         $("#login-errors").text(errorsJSON.__all__[0].message);
     }
     $("#login-block").show();
@@ -45,7 +44,12 @@ $(document).ready(function() {
             data: $(this).serialize(),
             success: function(response) {
                 if (response.success) {
-                    showLogged(response.username);
+                    if (response.redirect_url) {
+                        window.location.href = response.redirect_url;
+                    }
+                    else {
+                        showLogged(response.username);
+                    }
                 } else {
                     showLogin(response.errors);
                 }

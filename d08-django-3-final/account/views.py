@@ -16,10 +16,12 @@ def login_view(request):
 
     if form.is_valid():
         user = form.get_user()
+        next_url = request.POST.get('next')
         login(request, user)
         return JsonResponse({
             'success': True,
-            'username': user.username
+            'username': user.username,
+            'redirect_url': next_url
         })
 
     errors = form.errors.as_json()

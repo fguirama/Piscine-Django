@@ -12,6 +12,7 @@
         {% csrf_token %}
         {{ form.as_p }}
         <div id="login-errors" style="color:red;"></div>
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         <button type="submit">Login</button>
     </form>
 </div>
