@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Chatroom - {{ chatrooms.name }}{% endblock %}
+{% block script %}
+<script src="{% static 'chat/chatroom.js' %}"></script>
+{% endblock %}
 
 {% block content %}
     <h1>Chatroom {{ chatroom.name }}</h1>
+
+    <div id="messages">
+
+    </div>
+
+    <input id="message">
+    <button id="send">Send</button>
 
 {% endblock %}
