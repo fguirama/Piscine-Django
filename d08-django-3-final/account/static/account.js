@@ -14,14 +14,16 @@ function getCookie(name) {
 }
 
 function showLogin(errors = "") {
-    console.log('showLogin');
-    $("#login-errors").text(errors);
+    if (errors !== "") {
+        let errorsJSON = JSON.parse(errors);
+        console.log(errorsJSON.__all__[0].message);
+        $("#login-errors").text(errorsJSON.__all__[0].message);
+    }
     $("#login-block").show();
     $("#logged-block").hide();
 }
 
 function showLogged(username) {
-    console.log('showLogged');
     $("#logged-username").text(username);
     $("#login-block").hide();
     $("#logged-block").show();
@@ -43,7 +45,6 @@ $(document).ready(function() {
             data: $(this).serialize(),
             success: function(response) {
                 if (response.success) {
-                    console.log('success', response);
                     showLogged(response.username);
                 } else {
                     showLogin(response.errors);

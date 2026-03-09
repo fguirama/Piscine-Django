@@ -8,10 +8,10 @@
 {% block content %}
 <div id="login-block">
     <h2>Login</h2>
-    <div id="login-errors" style="color:red;"></div>
     <form id="login-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        <div id="login-errors" style="color:red;"></div>
         <button type="submit">Login</button>
     </form>
 </div>
