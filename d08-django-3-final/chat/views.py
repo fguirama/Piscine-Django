@@ -1,13 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 
-from chat.models import Chat
+from chat.models import Chatroom
 
 
 def chats_view(request):
-    chats = Chat.objects.all()
-    return render(request, 'chats.html', context={'chats': chats})
+    chatrooms = Chatroom.objects.all()
+    return render(request, 'chats.html', context={'chatrooms': chatrooms})
 
 
-def chat_view(request, chat_id):
-    chat = get_object_or_404(Chat, pk=chat_id)
-    return render(request, 'chat.html', context={'chat': chat})
+def chatrooms_view(request, chatroom_id):
+    chatroom = get_object_or_404(Chatroom, pk=chatroom_id)
+    return render(request, 'chatroom.html', context={'chatroom': chatroom})
