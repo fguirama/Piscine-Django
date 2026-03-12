@@ -2,6 +2,11 @@
 {% load static %}
 {% block title %}Chatroom - {{ chatrooms.name }}{% endblock %}
 {% block script %}
+<script>
+    const roomName = "{{ chatroom.id }}";
+    const userId = "{{ request.user.id }}";
+    const userName = "{{ request.user.username }}";
+</script>
 <script src="{% static 'chat/chatroom.js' %}"></script>
 {% endblock %}
 

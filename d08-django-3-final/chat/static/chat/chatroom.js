@@ -1,24 +1,42 @@
+function showMessage(data) {
+    const $listMessages = $('<li>');
+
+    $listMessages.addClass('d-flex');
+    $listMessages.append($('<div>').text(data.username + ':'))
+    $listMessages.append($('<div>').text(data.message))
+    $('#messages').append($listMessages)
+}
+
 $(document).ready(function() {
-    const socket = new WebSocket("ws://" + window.location.host + "/ws/chat/");
+    console.log('Room name:', roomName);
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
 
     socket.onopen = function() {
-        console.log("Connected");
+        console.log('Connected');
     };
 
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
-        console.log("Message:", data.message);
+        console.log('Message:', data);
+
+        showMessage(data);
     };
 
     socket.onclose = function() {
-        console.log("Disconnected");
+        console.log('Disconnected');
     };
 
-    $("#send").click(function() {
-        const message = $("#message").val();
+    $('#send').click(function() {
+        const $message = $('#message');
+        const message = $message.val();
+        const data = {
+            message: message,
+            username: userName
+        }
 
-        socket.send(JSON.stringify({
-            message: message
-        }));
+        $message.val('');
+        socket.send(JSON.stringify(data));
+        showMessage(data);
+        $message.focus();
     });
 });
