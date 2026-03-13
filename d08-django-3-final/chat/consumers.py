@@ -8,6 +8,19 @@ from d09.settings import SAVE_N_MESSAGES
 
 
 @database_sync_to_async
+def change_user_status(chatroom, user):
+    if user in chatroom.connected_users.all():
+        chatroom.connected_users.remove(user)
+    else:
+        chatroom.connected_users.add(user)
+
+
+@database_sync_to_async
+def get_connected_users(chatroom):
+    return list(chatroom.connected_users.values_list('username', flat=True))
+
+
+@database_sync_to_async
 def room_exists(room_name):
     try:
         chatroom = Chatroom.objects.get(id=room_name)
@@ -30,18 +43,19 @@ def save_message(chatroom, username, message):
 class ChatConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(args, kwargs)
+        self.user = None
         self.room_name = None
         self.chatroom = None
         self.room_group_name = None
 
     async def connect(self, test=None):
+        self.user = self.scope['user']
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.chatroom, self.history = await room_exists(self.room_name)
+        self.chatroom, history = await room_exists(self.room_name)
         if not self.chatroom:
             await self.close()
 
         self.room_group_name = f'chat_{self.room_name}'
-        username = self.scope["user"].username
 
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -50,24 +64,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
-        # history = await get_last_messages(self.room_name)
+        connected_users = await get_connected_users(self.chatroom)
 
         await self.send(text_data=json.dumps({
-            'type': 'history',
-            'messages': self.history
+            'type': 'connection_success',
+            'messages': history,
+            'connected_users': connected_users
         }))
 
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'chat_message',
                 'room_name': self.room_name,
-                'message': f'{username} has joined the chat'
+                'type': 'chat_message',
+                'send_type': 'user_joined',
+                'username': self.user.username,
+                'message': f'{self.user.username} has joined the chat'
             }
         )
+        await change_user_status(self.chatroom, self.user)
 
     async def disconnect(self, close_code):
-
         await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
@@ -76,10 +93,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'disconnect',
-                'close_code': close_code
+                'room_name': self.room_name,
+                'type': 'chat_message',
+                'send_type': 'user_left',
+                'username': self.user.username,
+                'message': f'{self.user.username} has left the chat'
             }
         )
+        await change_user_status(self.chatroom, self.user)
 
     async def receive(self, text_data):
         data = json.loads(text_data)
@@ -90,19 +111,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             {
                 'type': 'chat_message',
+                'send_type': 'message',
                 'username': data['username'],
                 'message': data['message']
             }
         )
 
     async def chat_message(self, event):
-        data = {
+        await self.send(text_data=json.dumps({
+            'type': event['send_type'],
             'message': event['message'],
-        }
-        if event.get('username'):
-            data['username'] = event['username']
-            data['type'] = 'message'
-        else:
-            data['type'] = 'new_user'
-
-        await self.send(text_data=json.dumps(data))
+            'username': event['username'],
+        }))

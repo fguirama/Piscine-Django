@@ -1,9 +1,34 @@
+function showNewUser(username) {
+    const $listUser = $('<li>').attr('data-value', username).text(username);
+    $('#users').append($listUser)
+}
+
+function removeNewUser(username) {
+    const $user = $("#users [data-value=" + username + "]");
+    if ($user.length) {
+        $user.remove();
+    }
+}
+
+function showConnectedUsers(users) {
+    $('#users').empty();
+    users.forEach(user => {
+        showNewUser(user);
+    })
+}
+
 function showNewMessage(data) {
     const $listMessages = $('<li>');
 
     $listMessages.addClass('d-flex');
-    if (data.username) {
+    if (data.type === 'message') {
         $listMessages.append($('<div>').text(data.username + ':'))
+    }
+    else if (data.type === 'user_joined') {
+        showNewUser(data.username);
+    }
+    else if (data.type === 'user_left') {
+        removeNewUser(data.username);
     }
     $listMessages.append($('<div>').text(data.message))
     $('#messages').append($listMessages)
@@ -19,8 +44,6 @@ function showNewMessages(data) {
         showNewMessage(data);
     }
 }
-
-
 
 $(document).ready(function() {
     function sendMessage() {
@@ -45,6 +68,9 @@ $(document).ready(function() {
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
 
+        if (data.type === 'connection_success') {
+            showConnectedUsers(data.connected_users)
+        }
         showNewMessages(data);
     };
 

@@ -13,11 +13,20 @@
 {% block content %}
     <h1>Chatroom {{ chatroom.name }}</h1>
 
-    <div id="messages">
+    <div class="d-flex">
+        <div>
+            <div id="messages">
 
+            </div>
+
+            <input id="message">
+            <button id="send">Send</button>
+        </div>
+
+        <div>
+            <h2>Users</h2>
+            <ul id="users">
+            </ul>
+        </div>
     </div>
-
-    <input id="message">
-    <button id="send">Send</button>
-
 {% endblock %}
