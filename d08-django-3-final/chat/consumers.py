@@ -4,22 +4,40 @@ from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from chat.models import Chatroom
+from d09.settings import SAVE_N_MESSAGES
 
 
 @database_sync_to_async
 def room_exists(room_name):
-    return Chatroom.objects.filter(id=room_name).exists()
+    try:
+        chatroom = Chatroom.objects.get(id=room_name)
+        messages = chatroom.messages.all().order_by('-created_at')[:SAVE_N_MESSAGES]
+        return chatroom, [{'username': m.username, 'message': m.message} for m in messages]
+    except Chatroom.DoesNotExist:
+        return None, None
+
+
+@database_sync_to_async
+def save_message(chatroom, username, message):
+    try:
+        chatroom.messages.create(username=username, message=message)
+        last_messages = chatroom.messages.order_by('-created_at').values_list('id', flat=True)[:SAVE_N_MESSAGES]
+        chatroom.messages.exclude(id__in=last_messages).delete()
+    except Exception as e:
+        print(e)
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(args, kwargs)
         self.room_name = None
+        self.chatroom = None
         self.room_group_name = None
 
     async def connect(self, test=None):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        if not await room_exists(self.room_name):
+        self.chatroom, self.history = await room_exists(self.room_name)
+        if not self.chatroom:
             await self.close()
 
         self.room_group_name = f'chat_{self.room_name}'
@@ -31,6 +49,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
         await self.accept()
+
+        # history = await get_last_messages(self.room_name)
+
+        await self.send(text_data=json.dumps({
+            'type': 'history',
+            'messages': self.history
+        }))
 
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -59,6 +84,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
 
+        await save_message(self.chatroom, data['username'], data['message'])
+
         await self.channel_layer.group_send(
             self.room_group_name,
             {
@@ -74,5 +101,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }
         if event.get('username'):
             data['username'] = event['username']
+            data['type'] = 'message'
+        else:
+            data['type'] = 'new_user'
 
         await self.send(text_data=json.dumps(data))

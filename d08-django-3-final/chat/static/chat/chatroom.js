@@ -1,15 +1,23 @@
-function showMessage(data) {
+function showNewMessage(data) {
     const $listMessages = $('<li>');
 
+    $listMessages.addClass('d-flex');
     if (data.username) {
-        $listMessages.addClass('d-flex');
         $listMessages.append($('<div>').text(data.username + ':'))
-        $listMessages.append($('<div>').text(data.message))
+    }
+    $listMessages.append($('<div>').text(data.message))
+    $('#messages').append($listMessages)
+}
+
+function showNewMessages(data) {
+    if (data.type === 'history') {
+        data.messages.forEach(message => {
+            showNewMessage(message);
+        })
     }
     else {
-        $listMessages.text(data.message)
+        showNewMessage(data);
     }
-    $('#messages').append($listMessages)
 }
 
 
@@ -37,7 +45,7 @@ $(document).ready(function() {
     socket.onmessage = function(event) {
         const data = JSON.parse(event.data);
 
-        showMessage(data);
+        showNewMessages(data);
     };
 
     socket.onclose = function() {
