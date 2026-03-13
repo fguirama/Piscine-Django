@@ -36,7 +36,6 @@ $(document).ready(function() {
 
         $message.val('');
         socket.send(JSON.stringify(data));
-        showMessage(data);
         $message.focus();
     });
 });
