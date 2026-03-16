@@ -1,6 +1,10 @@
 function showNewUser(username) {
-    const $listUser = $('<li>').attr('data-value', username).text(username);
-    $('#users').append($listUser)
+    const $user = $("#users [data-value=" + username + "]");
+
+    if (!$user.length) {
+        const $listUser = $('<li>').attr('data-value', username).text(username);
+        $('#users').append($listUser)
+    }
 }
 
 function removeNewUser(username) {
