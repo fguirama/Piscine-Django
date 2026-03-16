@@ -2,12 +2,14 @@
 {% block title %}Chatrooms{% endblock %}
 
 {% block content %}
-    <h1>Chatrooms</h1>
-
-    <ul style="display: flex; flex-direction: column;">
-        {% for c in chatrooms %}
-            <li><a href="{% url 'chatroom' c.id %}">{{ c.name }}</a></li>
-        {% endfor %}
-    </ul>
-
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Chatrooms</h1>
+            <div class="list-group">
+                {% for c in chatrooms %}
+                    <a href="{% url 'chatroom' c.id %}" class="list-group-item list-group-item-action">{{ c.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

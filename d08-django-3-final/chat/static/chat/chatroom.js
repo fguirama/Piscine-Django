@@ -26,12 +26,16 @@ function showNewMessage(data) {
 
     if (data.type === 'user_joined') {
         showNewUser(data.username);
+        $listMessages.addClass('text-success fst-italic');
+        $listMessages.append($('<i>').addClass('bi bi-box-arrow-in-right me-1'));
     }
     else if (data.type === 'user_left') {
         removeNewUser(data.username);
+        $listMessages.addClass('text-danger fst-italic');
+        $listMessages.append($('<i>').addClass('bi bi-box-arrow-right me-1'));
     }
     else {
-        $listMessages.append($('<span>').addClass('chat-username').text(data.username + ':'))
+        $listMessages.append($('<strong>').addClass('chat-username text-primary').text(data.username + ': '))
     }
     $listMessages.append(data.message)
 
