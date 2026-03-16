@@ -7,12 +7,7 @@ from chat.models import Chatroom
 from d09.settings import SAVE_N_MESSAGES
 
 
-@database_sync_to_async
-def change_user_status(chatroom, user):
-    if user in chatroom.connected_users.all():
-        chatroom.connected_users.remove(user)
-    else:
-        chatroom.connected_users.add(user)
+chatroom_users_connected = {}
 
 
 @database_sync_to_async
@@ -64,12 +59,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
-        connected_users = await get_connected_users(self.chatroom)
-
         await self.send(text_data=json.dumps({
             'type': 'connection_success',
             'messages': history,
-            'connected_users': connected_users
+            'connected_users': chatroom_users_connected.get(self.chatroom.id, []),
         }))
 
         await self.channel_layer.group_send(
@@ -82,7 +75,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'message': f'{self.user.username} has joined the chat'
             }
         )
-        await change_user_status(self.chatroom, self.user)
+
+        if self.chatroom.id not in chatroom_users_connected:
+            chatroom_users_connected[self.chatroom.id] = [self.user.username]
+        else:
+            chatroom_users_connected[self.chatroom.id].append(self.user.username)
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -100,7 +97,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'message': f'{self.user.username} has left the chat'
             }
         )
-        await change_user_status(self.chatroom, self.user)
+        chatroom_users_connected[self.chatroom.id].remove(self.user.username)
 
     async def receive(self, text_data):
         data = json.loads(text_data)

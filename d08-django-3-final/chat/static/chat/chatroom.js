@@ -20,14 +20,14 @@ function showConnectedUsers(users) {
 function showNewMessage(data) {
     const $listMessages = $('<p>').addClass('chat-messages');
 
-    if (data.type === 'message') {
-        $listMessages.append($('<span>').addClass('chat-username').text(data.username + ':'))
-    }
-    else if (data.type === 'user_joined') {
+    if (data.type === 'user_joined') {
         showNewUser(data.username);
     }
     else if (data.type === 'user_left') {
         removeNewUser(data.username);
+    }
+    else {
+        $listMessages.append($('<span>').addClass('chat-username').text(data.username + ':'))
     }
     $listMessages.append(data.message)
 
@@ -37,8 +37,9 @@ function showNewMessage(data) {
 }
 
 function showNewMessages(data) {
-    if (data.type === 'history') {
+    if (data.type === 'connection_success') {
         data.messages.forEach(message => {
+            console.log(message);
             showNewMessage(message);
         })
     }
@@ -71,7 +72,7 @@ $(document).ready(function() {
         const data = JSON.parse(event.data);
 
         if (data.type === 'connection_success') {
-            showConnectedUsers(data.connected_users)
+            showConnectedUsers(data.connected_users);
         }
         showNewMessages(data);
     };
