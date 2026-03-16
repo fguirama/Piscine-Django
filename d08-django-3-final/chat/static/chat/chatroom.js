@@ -18,11 +18,10 @@ function showConnectedUsers(users) {
 }
 
 function showNewMessage(data) {
-    const $listMessages = $('<li>');
+    const $listMessages = $('<p>').addClass('chat-messages');
 
-    $listMessages.addClass('d-flex');
     if (data.type === 'message') {
-        $listMessages.append($('<div>').text(data.username + ':'))
+        $listMessages.append($('<span>').addClass('chat-username').text(data.username + ':'))
     }
     else if (data.type === 'user_joined') {
         showNewUser(data.username);
@@ -30,8 +29,11 @@ function showNewMessage(data) {
     else if (data.type === 'user_left') {
         removeNewUser(data.username);
     }
-    $listMessages.append($('<div>').text(data.message))
-    $('#messages').append($listMessages)
+    $listMessages.append(data.message)
+
+    const $messages = $('#messages')
+    $messages.append($listMessages)
+    $messages.scrollTop($messages[0].scrollHeight);
 }
 
 function showNewMessages(data) {
