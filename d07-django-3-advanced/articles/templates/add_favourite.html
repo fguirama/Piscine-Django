@@ -1,0 +1,7 @@
+{% load i18n %}
+
+<form method="post">
+  {% csrf_token %}
+  {{ form }}
+  <button type="submit">{% trans 'Add to favorites' %}</button>
+</form>

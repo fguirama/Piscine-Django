@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}d05/Exercice 0{{ n }}: {{ data_source }} - building a table{% endblock %}
+
+{% block content %}
+
+{% if status %}
+    {% include "component/status.html" with status=status text=text %}
+{% endif %}
+
+{% if statuses %}
+    {% for status in statuses %}
+        {% include "component/status.html" with status=status.status text=status.text %}
+    {% endfor %}
+{% endif %}
+
+{% endblock %}

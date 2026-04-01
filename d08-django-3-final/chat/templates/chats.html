@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Chatrooms{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">Chatrooms</h1>
+            <div class="list-group">
+                {% for c in chatrooms %}
+                    <a href="{% url 'chatroom' c.id %}" class="list-group-item list-group-item-action">{{ c.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

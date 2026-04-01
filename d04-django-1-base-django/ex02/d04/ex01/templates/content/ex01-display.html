@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Ex01: Display process of a static page.{% endblock %}
+
+{% block content %}
+<h1>From Request to Response</h1>
+
+<p>
+    When a user enters a URL in their browser, an HTTP request is sent to the web server.
+    This request is first handled by the framework’s routing system, which determines
+    which view should process it.
+</p>
+
+<p>
+    The view is responsible for handling the request. For a static page, the view simply
+    selects a template and does not need complex logic or database access.
+</p>
+
+<p>
+    The template engine then renders the HTML template, optionally inserting data.
+    Once rendered, the server sends the final HTML page back to the browser as an HTTP response.
+</p>
+
+<p>
+    Finally, the browser receives the response and displays the web page to the user.
+</p>
+{% endblock %}

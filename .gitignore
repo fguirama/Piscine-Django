@@ -1,0 +1,10 @@
+.idea
+django_venv
+.venv
+.DS_Store
+*.pyc
+**__pycache__
+**/migrations/*.py
+!**/migrations/__init__.py
+db.sqlite3
+staticfiles

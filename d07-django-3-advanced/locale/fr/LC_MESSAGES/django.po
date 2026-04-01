@@ -1,0 +1,118 @@
+msgid ""
+msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-02-15 18:03+0100\n"
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#: articles/templates/add_favourite.html:4
+#: articles/templates/article_detail.html:16
+msgid "Add to favorites"
+msgstr "Ajouter aux favoris"
+
+#: articles/templates/article_detail.html:9
+msgid "Author"
+msgstr "Auteur"
+
+#: articles/templates/article_detail.html:10
+msgid "Date"
+msgstr "Date"
+
+#: articles/templates/article_detail.html:11
+#: articles/templates/article_list.html:11
+#: articles/templates/publications.html:11
+msgid "Synopsis"
+msgstr "Synopsis"
+
+#: articles/templates/article_list.html:3
+msgid "Article list"
+msgstr "Liste des articles"
+
+#: articles/templates/article_list.html:10
+#: articles/templates/publications.html:10
+msgid "Title"
+msgstr "Titre"
+
+#: articles/templates/article_list.html:12
+msgid "Writer"
+msgstr "Auteur"
+
+#: articles/templates/article_list.html:13
+#: articles/templates/publications.html:12
+msgid "Created"
+msgstr "Créé"
+
+#: articles/templates/article_list.html:14
+msgid "When"
+msgstr "Quand"
+
+#: articles/templates/article_list.html:26
+msgid "ago"
+msgstr "il y a"
+
+#: articles/templates/article_list.html:28
+#: articles/templates/publications.html:23
+msgid "Read"
+msgstr "Lire"
+
+#: articles/templates/favourite_articles.html:3
+#: articles/templates/favourite_articles.html:7
+msgid "My favorite articles"
+msgstr "Mes articles favoris"
+
+#: articles/templates/publications.html:3
+msgid "My publications"
+msgstr "Mes publications"
+
+#: articles/templates/publications.html:30
+#: articles/templates/publish_article.html:4
+msgid "Publish an article"
+msgstr "Publier un article"
+
+#: articles/templates/publish_article.html:7
+msgid "New article"
+msgstr "Nouvel article"
+
+#: articles/templates/publish_article.html:12
+msgid "Publish"
+msgstr "Publier"
+
+#: news/templates/base.html:35 news/templates/base.html:48
+msgid "Articles"
+msgstr "Articles"
+
+#: news/templates/base.html:35
+msgid "Share your writings"
+msgstr "Partagez vos écrits"
+
+#: news/templates/base.html:53
+msgid "Favourites"
+msgstr "Favoris"
+
+#: news/templates/base.html:56
+msgid "Publications"
+msgstr "Publications"
+
+#: news/templates/base.html:60 news/templates/registration/register.html:9
+msgid "Register"
+msgstr "S'inscrire"
+
+#: news/templates/base.html:67
+msgid "Logged as"
+msgstr "Connecté en tant que"
+
+#: news/templates/base.html:70
+msgid "Logout"
+msgstr "Déconnexion"
+
+#: news/templates/base.html:75
+msgid "username"
+msgstr "nom d'utilisateur"
+
+#: news/templates/base.html:76
+msgid "password"
+msgstr "mot de passe"
+
+#: news/templates/base.html:77 news/templates/registration/login.html:8
+msgid "Login"
+msgstr "Connexion"

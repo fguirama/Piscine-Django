@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Account{% endblock %}
+{% block script %}
+<script src="{% static 'account/account.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="login-block">
+    <h2>Login</h2>
+    <form id="login-form" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="login-errors" style="color:red;"></div>
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
+
+<div id="logged-block">
+    <h2>Logged as <span id="logged-username">{{ user.username }}</span></h2>
+    <button id="logout-btn" class="btn btn-danger">Logout</button>
+</div>
+{% endblock %}

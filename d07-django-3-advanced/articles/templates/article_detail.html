@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ article.title }}</h2>
+
+<p><strong>{% trans "Author" %} :</strong> {{ article.author.username }}</p>
+<p><strong>{% trans "Date" %} :</strong> {{ article.created }}</p>
+<p><strong>{% trans "Synopsis" %} :</strong> {{ article.synopsis }}</p>
+
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'add-favourite' article.id %}">
+    {% csrf_token %}
+    <button type="submit">{% trans "Add to favorites" %} ❤️</button>
+</form>
+{% endif %}
+
+<hr>
+
+<p>{{ article.content }}</p>
+{% endblock %}

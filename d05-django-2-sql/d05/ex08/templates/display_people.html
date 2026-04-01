@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}d05/Exercise 0{{ n }}: {{ data_source }} - Foreign Key{% endblock %}
+
+{% block css %}
+  {% include "component/css_table.html" %}
+
+  code {
+    font-family: "Fira Code", monospace;
+    background-color: #f4f4f4;
+    color: #c7254e;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+{% endblock %}
+
+{% block content %}
+
+{% if peoples %}
+  <table>
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Homeworld</th>
+      <th>Climate</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for p in peoples %}
+    <tr>
+      <td>{{ p.name }}</td>
+      <td>{% if p.homeworld %}{{ p.homeworld }}{% else %}{{ p.homeworld__name }}{% endif%}</td>
+      <td>{% if p.climate %}{{ p.climate }}{% else %}{{ p.homeworld__climate }}{% endif%}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+    <p>
+      {% if command_line %}
+        No data available, please use the following command line before use: <code>{{ command_line }}</code>
+      {% else %}
+        No data available
+    </p>
+  {% endif %}
+  {% if status %}
+    {% include "component/status.html" with status=status text=text %}
+  {% endif %}
+{% endif %}
+
+
+
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>First Form.</title>
+</head>
+<body>
+
+<h1>Submit Text</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+<h2>History</h2>
+{% if history %}
+    <ul>
+        {% for entry in history %}
+            <li><strong>{{ entry.timestamp }}</strong>: {{ entry.text }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No entries yet.</p>
+{% endif %}
+
+</body>
+</html>
